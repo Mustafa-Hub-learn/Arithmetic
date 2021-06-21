@@ -1,0 +1,116 @@
+import random
+
+
+def get_opperator():
+    n = random.randint(0,2)
+    if n == 0:
+        return "+"
+    elif n == 1:
+        return "-"
+    elif n == 2:
+        return "*"
+
+
+def get_nums():
+    num = random.randint(2,9)
+    return num
+
+
+def check_format(x):
+    try:
+        x = int(x)
+        return True
+    except ValueError:
+        return False
+
+
+def level_check(n):
+    try:
+        if int(n) in range(1, 3):
+            return True
+        else:
+            return False
+    except ValueError:
+        return False
+
+
+print("""Which level do you want? Enter a number:
+1 - simple operations with numbers 2-9
+2 - integral squares of 11-29""")
+correct_format = False
+while not correct_format:
+    level_select = input()
+    if level_check(level_select):
+        break
+    else:
+        print("Incorrect format")
+
+
+
+
+corr = 0
+c = 0
+while c < 5:
+    if int(level_select) == 1:
+        lvl = "1 (simple operations with numbers 2-9)."
+        n1 = get_nums()
+        n2 = get_nums()
+        opp = get_opperator()
+        print("{0} {1} {2}".format(n1, opp, n2))
+        formatcorr = False
+        while not formatcorr:
+            ans = input()
+            if check_format(ans):
+                formatcorr = True
+            else:
+                print("Incorrect format")
+            if formatcorr:
+                if opp == "+" and int(ans) == int(n1) + int(n2):
+                    print("Right!")
+                    c += 1
+                    corr += 1
+                elif opp == "-" and int(ans) == int(n1) - int(n2):
+                    print("Right!")
+                    c += 1
+                    corr += 1
+                elif opp == "*" and int(ans) == int(n1) * int(n2):
+                    print("Right!")
+                    c += 1
+                    corr += 1
+                else:
+                    print("Wrong!")
+                    c += 1
+    elif int(level_select) == 2:
+        lvl = "2 (integral squares 11-29)."
+        num_sq = random.randint(11, 29)
+        print(num_sq)
+        formatcorr = False
+        while not formatcorr:
+            ans = input()
+            if check_format(ans):
+                formatcorr = True
+            else:
+                print("Incorrect format")
+            if formatcorr:
+                if int(ans) == num_sq ** 2:
+                    print("Right!")
+                    corr += 1
+                    c += 1
+                else:
+                    print("Wrong!")
+                    c += 1
+
+print("Your mark is {0}/5".format(corr))
+
+print("Would you like to save your result to the file? Enter yes or no.")
+y_n = input()
+if y_n in ["yes", "YES", "Yes", "y"]:
+    results = open("results.txt", "a", encoding='utf-8')
+    if not results:
+        results = open('results.txt', "w", encoding='utf-8')
+    print("what is your name?")
+    name = input()
+    results.writelines("{0}: {1}/5 in level ".format(name, corr) + lvl)
+    print('The results are saved in "results.txt".')
+    results.close()
+
